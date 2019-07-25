@@ -8,13 +8,13 @@ package leap
 // IsLeapYear should have a comment documenting it.
 func IsLeapYear(year int) bool {
 	// Exclude most years: non-divisible by 4
-	if year % 4 != 0 {
+	if year%4 != 0 {
 		return false
 	}
 
 	// It is divisible by 4.
 	// Next test: is it divisible by 100, but not by 400?
-	if year % 100 == 0 && year % 400 != 0 {
+	if year%100 == 0 && year%400 != 0 {
 		return false
 	}
 
