@@ -33,7 +33,7 @@ func KindFromSides(a, b, c float64) Kind {
 		return NaT
 	}
 
-	// Any side length a Inf?
+	// Any side length a Inf? First or last in a sorted list.
 	if math.IsInf(sidesList[0], -1) || math.IsInf(sidesList[2], 1) {
 		return NaT
 	}
@@ -43,12 +43,12 @@ func KindFromSides(a, b, c float64) Kind {
 		return NaT
 	}
 
-	// Use a map to find how many unique lengths
-	sidesMap := make(map[float64]bool)
-
-	sidesMap[a] = true
-	sidesMap[b] = true
-	sidesMap[c] = true
+	// Use a map to partially implement a set, to count unique lengths.
+	sidesMap := map[float64]bool {
+		a: true,
+		b: true,
+		c: true,
+	}
 
 	if len(sidesMap) == 1 {
 		return Equ
