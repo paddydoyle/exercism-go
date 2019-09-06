@@ -43,18 +43,11 @@ func KindFromSides(a, b, c float64) Kind {
 		return NaT
 	}
 
-	// Use a map to partially implement a set, to count unique lengths.
-	sidesMap := map[float64]bool{
-		a: true,
-		b: true,
-		c: true,
-	}
-
-	if len(sidesMap) == 1 {
+	if a == b && b == c {
 		return Equ
 	}
 
-	if len(sidesMap) == 2 {
+	if a == b || a == c || b == c {
 		return Iso
 	}
 
