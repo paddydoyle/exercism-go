@@ -44,7 +44,7 @@ func KindFromSides(a, b, c float64) Kind {
 	}
 
 	// Use a map to partially implement a set, to count unique lengths.
-	sidesMap := map[float64]bool {
+	sidesMap := map[float64]bool{
 		a: true,
 		b: true,
 		c: true,
