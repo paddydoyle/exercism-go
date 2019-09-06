@@ -12,9 +12,9 @@ type Kind int
 const (
 	// Pick values for the following identifiers used by the test program.
 	NaT = iota // not a triangle
-	Equ = iota // equilateral
-	Iso = iota // isosceles
-	Sca = iota // scalene
+	Equ        // equilateral
+	Iso        // isosceles
+	Sca        // scalene
 )
 
 // KindFromSides should have a comment documenting it.
