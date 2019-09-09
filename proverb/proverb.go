@@ -5,11 +5,28 @@
 // https://golang.org/doc/effective_go.html#commentary
 package proverb
 
+import (
+	"fmt"
+)
+
+var proverbLine = "For want of a %s the %s was lost."
+var proverbLast = "And all for the want of a %s."
+
 // Proverb should have a comment documenting it.
 func Proverb(rhyme []string) []string {
-	// Write some code here to pass the test suite.
-	// Then remove all the stock comments.
-	// They're here to help you get started but they only clutter a finished solution.
-	// If you leave them in, reviewers may protest!
-	return []string{}
+	// Take last element, if there is one. For the final line.
+
+	var results []string
+
+	if len(rhyme) == 0 {
+		return []string{}
+	}
+
+	for i, _ := range rhyme[0 : len(rhyme)-1] {
+		results = append(results, fmt.Sprintf(proverbLine, rhyme[i], rhyme[i+1]))
+	}
+
+	results = append(results, fmt.Sprintf(proverbLast, rhyme[0]))
+
+	return results
 }
