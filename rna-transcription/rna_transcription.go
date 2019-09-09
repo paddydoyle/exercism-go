@@ -2,13 +2,14 @@ package strand
 
 import "bytes"
 
-func ToRNA(dna string) string {
-	sidesMap := map[rune]rune{
+var sidesMap = map[rune]rune{
 		'G': 'C',
 		'C': 'G',
 		'T': 'A',
 		'A': 'U',
 	}
+
+func ToRNA(dna string) string {
 
 	buf := bytes.Buffer{}
 
