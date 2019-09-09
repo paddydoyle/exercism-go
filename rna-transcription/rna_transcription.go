@@ -3,11 +3,11 @@ package strand
 import "bytes"
 
 var sidesMap = map[rune]rune{
-		'G': 'C',
-		'C': 'G',
-		'T': 'A',
-		'A': 'U',
-	}
+	'G': 'C',
+	'C': 'G',
+	'T': 'A',
+	'A': 'U',
+}
 
 func ToRNA(dna string) string {
 
