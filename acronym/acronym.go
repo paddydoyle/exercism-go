@@ -13,17 +13,54 @@ import (
 )
 
 // Abbreviate should have a comment documenting it.
-func Abbreviate(s string) string {
+func Abbreviate2(s string) string {
+	//words := regexp.MustCompile(`[ \-_]`).Split(s, -1)
+
 	buf := bytes.Buffer{}
 
-	strs := regexp.MustCompile(`[ \-_]`).Split(s, -1)
+	//fmt.Printf("words = %s\n", words)
 
-	//fmt.Printf("strs = %s\n", strs)
+	//words := re.Split(s, -1).FindAllString(`\w`)
 
-	//strs := re.Split(s, -1).FindAllString(`\w`)
+	//strs2 := regexp.MustCompile(`\a([[:alpha:]])|\b([[:alpha:]])|`).FindAllStringSubmatch(s, -1)
+	words := regexp.MustCompile(`^([[:alpha:]])|[ \-_^]([[:alpha:]])`).FindAllStringSubmatch(s, -1)
+	//fmt.Printf("s = %s\n", s)
+	//fmt.Printf("words = %s\n", words)
 
 
-        for _, word := range strs {
+        for _, word := range words {
+		//fmt.Printf("word = %s\n", word)
+		//fmt.Printf("word join = %s\n", strings.Join(word, `", "`))
+		//for i, w := range word {
+		//	fmt.Printf("w[%d] = %s\n", i, w)
+		//}
+		//fmt.Printf("word[0] = %s\n", word[1])
+                if len(word) > 0 {
+			buf.WriteString(strings.Join(word[1:], ``))
+		}
+        }
+
+        return strings.ToUpper(buf.String())
+}
+
+// Abbreviate should have a comment documenting it.
+func Abbreviate(s string) string {
+	words := regexp.MustCompile(`[ \-_]`).Split(s, -1)
+
+	buf := bytes.Buffer{}
+
+	//fmt.Printf("words = %s\n", words)
+
+	//words := re.Split(s, -1).FindAllString(`\w`)
+
+	//strs2 := regexp.MustCompile(`\a([[:alpha:]])|\b([[:alpha:]])|`).FindAllStringSubmatch(s, -1)
+	//strs2 := regexp.MustCompile(`^([[:alpha:]])|[ \-_]([[:alpha:]])`).FindAllStringSubmatch(s, -1)
+	//fmt.Printf("s = %s\n", s)
+	//fmt.Printf("strs2 = %s\n", strs2)
+
+
+        for _, word := range words {
+		//fmt.Printf("word = %s\n", word)
                 if len(word) > 0 {
 			buf.WriteByte(word[0])
 		}
