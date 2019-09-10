@@ -1,8 +1,7 @@
 // This is a "stub" file.  It's a little start on your solution.
 // It's not a complete solution though; you have to write some code.
 
-// Package proverb should have a package comment that summarizes what it's about.
-// https://golang.org/doc/effective_go.html#commentary
+// Package proverb: Given a list of inputs, generate the relevant proverb.
 package proverb
 
 import (
@@ -12,10 +11,8 @@ import (
 var proverbLine = "For want of a %s the %s was lost."
 var proverbLast = "And all for the want of a %s."
 
-// Proverb should have a comment documenting it.
+// Given a list of inputs, generate the relevant proverb.
 func Proverb(rhyme []string) []string {
-	// Take last element, if there is one. For the final line.
-
 	var results []string
 
 	if len(rhyme) == 0 {
