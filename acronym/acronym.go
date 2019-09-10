@@ -5,11 +5,29 @@
 // https://golang.org/doc/effective_go.html#commentary
 package acronym
 
+import (
+	"bytes"
+	//"fmt"
+	"regexp"
+	"strings"
+)
+
 // Abbreviate should have a comment documenting it.
 func Abbreviate(s string) string {
-	// Write some code here to pass the test suite.
-	// Then remove all the stock comments.
-	// They're here to help you get started but they only clutter a finished solution.
-	// If you leave them in, reviewers may protest!
-	return ""
+	buf := bytes.Buffer{}
+
+	strs := regexp.MustCompile(`[ \-_]`).Split(s, -1)
+
+	//fmt.Printf("strs = %s\n", strs)
+
+	//strs := re.Split(s, -1).FindAllString(`\w`)
+
+
+        for _, word := range strs {
+                if len(word) > 0 {
+			buf.WriteByte(word[0])
+		}
+        }
+
+        return strings.ToUpper(buf.String())
 }
