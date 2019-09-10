@@ -19,7 +19,7 @@ func Proverb(rhyme []string) []string {
 		return []string{}
 	}
 
-	for i, _ := range rhyme[0 : len(rhyme)-1] {
+	for i, _ := range rhyme[:len(rhyme)-1] {
 		results = append(results, fmt.Sprintf(proverbLine, rhyme[i], rhyme[i+1]))
 	}
 
