@@ -6,21 +6,26 @@
 package acronym
 
 import (
-	"regexp"
 	"strings"
 )
 
-// Abbreviate should have a comment documenting it.
-func Abbreviate(s string) string {
-	words := regexp.MustCompile(`[ \-_]`).Split(s, -1)
+var stopChars = []string{
+	"-",
+	"_",
+}
 
-	var buf = new(strings.Builder)
+// Abbreviate should have a comment documenting it.
+func Abbreviate(s string) (output string) {
+	for _, stopChar := range stopChars {
+		s = strings.Replace(s, stopChar, " ", -1)
+	}
+
+	words := strings.Fields(s)
+
+	buf := new(strings.Builder)
 
 	for _, word := range words {
-		// Split includes empty matches
-		if len(word) > 0 {
-			buf.WriteByte(word[0])
-		}
+		buf.WriteByte(word[0])
 	}
 
 	return strings.ToUpper(buf.String())
