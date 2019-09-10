@@ -13,7 +13,7 @@ var proverbLast = "And all for the want of a %s."
 
 // Given a list of inputs, generate the relevant proverb.
 func Proverb(rhyme []string) []string {
-	var results []string
+	results := make([]string, 0, len(rhyme))
 
 	if len(rhyme) == 0 {
 		return []string{}
