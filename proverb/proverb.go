@@ -8,22 +8,25 @@ import (
 	"fmt"
 )
 
-var proverbLine = "For want of a %s the %s was lost."
-var proverbLast = "And all for the want of a %s."
+const (
+	proverbLine = "For want of a %s the %s was lost."
+	proverbLast = "And all for the want of a %s."
+)
 
 // Given a list of inputs, generate the relevant proverb.
 func Proverb(rhyme []string) []string {
-	results := make([]string, 0, len(rhyme))
+	rhyme_len := len(rhyme)
+	results := make([]string, rhyme_len)
 
-	if len(rhyme) == 0 {
+	if rhyme_len == 0 {
 		return []string{}
 	}
 
-	for i, _ := range rhyme[:len(rhyme)-1] {
-		results = append(results, fmt.Sprintf(proverbLine, rhyme[i], rhyme[i+1]))
+	for i, _ := range rhyme[:rhyme_len-1] {
+		results[i] = fmt.Sprintf(proverbLine, rhyme[i], rhyme[i+1])
 	}
 
-	results = append(results, fmt.Sprintf(proverbLast, rhyme[0]))
+	results[rhyme_len-1] = fmt.Sprintf(proverbLast, rhyme[0])
 
 	return results
 }
