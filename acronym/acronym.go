@@ -6,7 +6,6 @@
 package acronym
 
 import (
-	"bytes"
 	"regexp"
 	"strings"
 )
@@ -15,7 +14,7 @@ import (
 func Abbreviate(s string) string {
 	words := regexp.MustCompile(`[ \-_]`).Split(s, -1)
 
-	buf := bytes.Buffer{}
+	var buf = new(strings.Builder)
 
 	for _, word := range words {
 		// Split includes empty matches
