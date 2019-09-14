@@ -7,7 +7,7 @@ func Distance(a, b string) (distance int, err error) {
 		return distance, errors.New("inputs of unequal lengths")
 	}
 
-	for i, _ := range a {
+	for i := range a {
 		if a[i] != b[i] {
 			distance++
 		}
