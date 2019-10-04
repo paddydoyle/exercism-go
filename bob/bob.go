@@ -6,11 +6,38 @@
 package bob
 
 import (
+	"regexp"
 	"strings"
 	"unicode"
 )
 
 // Hey returns a string according to the rules of Bob.
+// 900-1000ns / op
+func Hey3(remark string) string {
+	//remark = strings.TrimSpace(remark)
+	isEmpty := regexp.MustCompile(`^\s*$`).MatchString
+	hasChars := regexp.MustCompile(`[[:alpha:]]`).MatchString
+	//hasUpperChars := regexp.MustCompile(`[A-Z]`).MatchString
+	isUpperQuestion := regexp.MustCompile(`^[A-Z ]+\?\s*$`).MatchString
+	isUpperString := regexp.MustCompile(`^[A-Z0-9 !,]+\s*$`).MatchString
+	isQuestion := regexp.MustCompile(`\?\s*$`).MatchString
+
+	switch {
+	case isEmpty(remark):
+		return "Fine. Be that way!"
+	case hasChars(remark) && isUpperQuestion(remark):
+		return "Calm down, I know what I'm doing!"
+	case hasChars(remark) && isUpperString(remark):
+		return "Whoa, chill out!"
+	case isQuestion(remark):
+		return "Sure."
+	default:
+		return "Whatever."
+	}
+}
+
+// Hey returns a string according to the rules of Bob.
+// 900-1000ns / op
 func Hey(remark string) string {
 	remark = strings.TrimSpace(remark)
 
