@@ -4,17 +4,18 @@ import (
 	"fmt"
 )
 
+// Easier to add new mappings
+var divisorMappings = map[int]string{
+	3: "Pling",
+	5: "Plang",
+	7: "Plong",
+}
+
 func Convert(input int) (output string) {
-	if input%3 == 0 {
-		output += "Pling"
-	}
-
-	if input%5 == 0 {
-		output += "Plang"
-	}
-
-	if input%7 == 0 {
-		output += "Plong"
+	for div, str := range divisorMappings {
+		if input%div == 0 {
+			output += str
+		}
 	}
 
 	if len(output) == 0 {
