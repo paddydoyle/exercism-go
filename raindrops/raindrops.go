@@ -1,7 +1,7 @@
 package raindrops
 
 import (
-	"fmt"
+	"strconv"
 )
 
 var divisorMappings = []struct {
@@ -23,7 +23,7 @@ func Convert(input int) (output string) {
 	}
 
 	if len(output) == 0 {
-		return fmt.Sprintf("%d", input)
+		return strconv.Itoa(input)
 	}
 
 	return output
