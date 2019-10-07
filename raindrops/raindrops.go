@@ -11,6 +11,8 @@ var divisorMappings = map[int]string{
 	7: "Plong",
 }
 
+// Convert a number to a string, the contents of which depend on the
+// number's factors.
 func Convert(input int) (output string) {
 	for div, str := range divisorMappings {
 		if input%div == 0 {
