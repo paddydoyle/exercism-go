@@ -11,7 +11,7 @@ func Score(input string) (score int) {
 	for _, ch := range input {
 		switch ch {
 		case 'A', 'E', 'I', 'O', 'U', 'L', 'N', 'R', 'S', 'T':
-			score += 1
+			score++
 		case 'D', 'G':
 			score += 2
 		case 'B', 'C', 'M', 'P':
