@@ -6,7 +6,7 @@ import (
 
 // Transform converts the int-to-chars map into a char-to-int map
 func Transform(input map[int][]string) map[string]int {
-	output := make(map[string]int)
+	output := make(map[string]int, len(input)*2)
 
 	for i, chars := range input {
 		for _, c := range chars {
