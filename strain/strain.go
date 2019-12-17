@@ -9,17 +9,6 @@ type Lists [][]int
 // Strings is a slice of strings
 type Strings []string
 
-// Keep filters a list, based on success of the given function
-func (collection Ints) Keep(f func(int) bool) (filtered Ints) {
-	for _, i := range collection {
-		if f(i) {
-			filtered = append(filtered, i)
-		}
-	}
-
-	return filtered
-}
-
 // Discard filters a list, based on failure of the given function
 func (collection Ints) Discard(f func(int) bool) (filtered Ints) {
 	for _, i := range collection {
@@ -31,7 +20,18 @@ func (collection Ints) Discard(f func(int) bool) (filtered Ints) {
 	return filtered
 }
 
-// Keep filters a list, based on failure of the given function
+// Keep filters a list, based on success of the given function
+func (collection Ints) Keep(f func(int) bool) (filtered Ints) {
+	for _, i := range collection {
+		if f(i) {
+			filtered = append(filtered, i)
+		}
+	}
+
+	return filtered
+}
+
+// Keep filters a list, based on success of the given function
 func (collection Strings) Keep(f func(string) bool) (filtered Strings) {
 	for _, i := range collection {
 		if f(i) {
