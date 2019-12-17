@@ -11,13 +11,7 @@ type Strings []string
 
 // Discard filters a list, based on failure of the given function
 func (collection Ints) Discard(f func(int) bool) (filtered Ints) {
-	for _, i := range collection {
-		if !f(i) {
-			filtered = append(filtered, i)
-		}
-	}
-
-	return filtered
+	return collection.Keep(func(i int) bool { return !f(i) })
 }
 
 // Keep filters a list, based on success of the given function
