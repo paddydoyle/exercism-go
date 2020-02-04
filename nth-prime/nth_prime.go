@@ -19,8 +19,12 @@ func Nth(input int) (int, bool) {
 	// So for the Sieve of Eratosthenes we'll allocate a bool
 	// array up to that size.
 	guessMax := input * int(math.Log(float64(input)))
-	// Except for small N, that's probably way too small
-	guessMax = int(math.Max(float64(guessMax), float64(input*input)))
+
+	// Except for small N, less than 10^6, that's probably way too small
+	// FIXME: magic numbers alert!
+	if input < 10e6 {
+		guessMax *= 4
+	}
 
 	// Assume that all numbers are primes, and mark
 	// the composites
