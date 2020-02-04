@@ -20,6 +20,7 @@ func Nth(input int) (int, bool) {
 	// Nth prime number roughly satisfies "n * log(n)"
 	// So for the Sieve of Eratosthenes we'll allocate a bool
 	// array up to that size.
+	//guessMax := input*int(math.Log(float64(input))) + input
 	guessMax := input * int(math.Log(float64(input)))
 	//fmt.Println("input = ", input, "; initial guess = ", guessMax)
 
@@ -31,12 +32,12 @@ func Nth(input int) (int, bool) {
 	//fmt.Println("new guess = ", guessMax)
 
 	// Assume that all numbers are primes, and mark
-	// the composites
+	// the composites. Initialised to false.
 	composites := make([]bool, guessMax, guessMax)
 
-	// Mark trivial cases
-	composites[0] = true
-	composites[1] = true
+	// Mark trivial cases. FIXME: remove
+	//composites[0] = true
+	//composites[1] = true
 	//fmt.Println("composites = ", composites)
 
 	prime := 2
@@ -44,7 +45,7 @@ func Nth(input int) (int, bool) {
 	// Treat even numbers separately, as it allows small optimisations
 	// in the odd number loop.
 	// Mark all multiples of the current prime
-	for j := 1; j*prime < guessMax; j++ {
+	for j := prime; j*prime < guessMax; j++ {
 		composites[j*prime] = true
 	}
 	//fmt.Println("after even loop: composites = ", composites)
@@ -55,7 +56,7 @@ func Nth(input int) (int, bool) {
 	// Outer loop: the nth prime
 	for n := 2; n < input; n++ {
 		// Mark all odd multiples of the current prime
-		for j := 1; j*prime < guessMax; j += 2 {
+		for j := prime; j*prime < guessMax; j += 2 {
 			composites[j*prime] = true
 			//fmt.Println("inner loop j = ", j, "; j*prime = ", j*prime)
 		}
