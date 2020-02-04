@@ -37,9 +37,16 @@ func Nth(input int) (int, bool) {
 
 	prime := 2
 
+	// Treat even numbers separately, as it allows small optimisations
+	// in the odd number loop.
+	// Mark all multiples of the current prime
+	for j := 2; j*prime < guessMax; j++ {
+		composites[j*prime] = true
+	}
+
 	for i := 1; i < input; i++ {
-		// Mark all multiples of the current prime
-		for j := 2; j*prime < guessMax; j++ {
+		// Mark all odd multiples of the current prime
+		for j := 3; j*prime < guessMax; j += 2 {
 			composites[j*prime] = true
 		}
 
