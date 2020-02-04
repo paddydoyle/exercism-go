@@ -22,7 +22,7 @@ func Nth(input int) (int, bool) {
 	// array up to that size.
 	//guessMax := input*int(math.Log(float64(input))) + input
 	guessMax := input * int(math.Log(float64(input)))
-	//fmt.Println("input = ", input, "; initial guess = ", guessMax)
+	//fmt.Println("-----------------------\n-- input = ", input, "; initial guess = ", guessMax)
 
 	// Except for small N, less than 10^6, that's way too small
 	// FIXME: magic numbers alert!
@@ -30,6 +30,8 @@ func Nth(input int) (int, bool) {
 		guessMax *= 4
 	}
 	//fmt.Println("new guess = ", guessMax)
+	sqrtGuessMax := int(math.Sqrt(float64(guessMax)))
+	//fmt.Println("sqrt guess = ", sqrtGuessMax)
 
 	// Assume that all numbers are primes, and mark
 	// the composites. Initialised to false.
@@ -47,20 +49,27 @@ func Nth(input int) (int, bool) {
 	// Mark all multiples of the current prime
 	for j := prime; j*prime < guessMax; j++ {
 		composites[j*prime] = true
+		//fmt.Println("inner loop j = ", j, "; j*prime = ", j*prime)
 	}
-	//fmt.Println("after even loop: composites = ", composites)
+	//fmt.Println(">> after even loop: composites = ", composites)
 
 	// Now the odd numbers.
 	prime = 3
 
 	// Outer loop: the nth prime
-	for n := 2; n < input; n++ {
+	for n := 2; n < sqrtGuessMax; n++ {
+		if composites[n] {
+			continue
+		}
+
+		//fmt.Println("OUTER loop; n = ", n, "; prime = ", prime)
 		// Mark all odd multiples of the current prime
 		for j := prime; j*prime < guessMax; j += 2 {
 			composites[j*prime] = true
 			//fmt.Println("inner loop j = ", j, "; j*prime = ", j*prime)
 		}
-		//fmt.Println("after inner loop; composites = ", composites)
+		//fmt.Println("after inner loop; sqrt(guessMax) = ", math.Sqrt(float64(guessMax)))
+		//fmt.Println(">> after inner loop; composites = ", composites)
 
 		//fmt.Println("starting with old prime = ", prime, "; next starting at ", prime+2)
 
@@ -69,8 +78,22 @@ func Nth(input int) (int, bool) {
 			//fmt.Println(">> checking ", j, " which is: ", composites[j], " (false => prime)")
 			if !composites[j] {
 				prime = j
+				//fmt.Println("FOUND ", n, "th prime = ", prime)
 				break
 			}
+		}
+	}
+
+	// Now look through the sieve for the nth prime
+	primeIndex := 1
+	for i := 2; i < guessMax; i++ {
+		//fmt.Println(">> checking ", j, " which is: ", composites[j], " (false => prime)")
+		if !composites[i] {
+			if primeIndex == input {
+				prime = i
+				break
+			}
+			primeIndex++
 		}
 	}
 
