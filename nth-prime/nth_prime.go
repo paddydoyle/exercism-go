@@ -6,7 +6,7 @@ import (
 
 // Nth returns the Nth prime number
 func Nth(input int) (int, bool) {
-	// Split off edge cases
+	// Split off trivial edge cases
 	if input == 0 {
 		return 0, false
 	} else if input == 1 {
@@ -15,12 +15,13 @@ func Nth(input int) (int, bool) {
 		return 3, true
 	}
 
+	// According to the Prime Number Theorem, the
 	// Nth prime number roughly satisfies "n * log(n)"
 	// So for the Sieve of Eratosthenes we'll allocate a bool
 	// array up to that size.
 	guessMax := input * int(math.Log(float64(input)))
 
-	// Except for small N, less than 10^6, that's probably way too small
+	// Except for small N, less than 10^6, that's way too small
 	// FIXME: magic numbers alert!
 	if input < 10e6 {
 		guessMax *= 4
@@ -37,8 +38,8 @@ func Nth(input int) (int, bool) {
 	prime := 2
 
 	for i := 1; i < input; i++ {
-		for j := 1; j*prime < guessMax; j++ {
-			// Mark all multiples of the current prime
+		// Mark all multiples of the current prime
+		for j := 2; j*prime < guessMax; j++ {
 			composites[j*prime] = true
 		}
 
