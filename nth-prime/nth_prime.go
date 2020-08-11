@@ -21,6 +21,7 @@ func Nth(n int) (int, bool) {
 	// Assume that all numbers are primes, and mark
 	// the composites via the sieve. Initialised to false.
 	composites := make([]bool, sieveLength, sieveLength)
+	sliceStart := 0
 
 	foundPrimes := 0
 
@@ -28,11 +29,15 @@ func Nth(n int) (int, bool) {
 	//fmt.Println("Nth: START n = ", n, "; foundPrimes = ", foundPrimes, "; len = ", len(composites))
 
 	for foundPrimes < n {
-		foundPrimes = sieveOdd(composites, n)
+		//foundPrimes = sieveOdd(composites, n)
+		foundPrimes = sieveOddInRange(composites, n, sliceStart)
 
 		// Increase the size of the sieve by n
+		sliceStart = len(composites)
 		extraComposites := make([]bool, n, n)
+		//fmt.Println("Nth: APPEND BEFORE ; composites = ", composites)
 		composites = append(composites, extraComposites...)
+		//fmt.Println("Nth: APPEND AFTER ; composites = ", composites)
 
 		//fmt.Println("Nth: OUTER n = ", n, "; foundPrimes = ", foundPrimes, "; len = ", len(composites))
 	}
@@ -42,7 +47,7 @@ func Nth(n int) (int, bool) {
 	return findNthPrime(composites, n), true
 }
 
-// sieveOdd runs the sieve on odd primes, starting from 3
+// sieveOdd runs the sieve on odd primes
 func sieveOdd(composites []bool, n int) int {
 	// Assume that 2 is already covered.
 	foundPrimes := 1
@@ -64,6 +69,45 @@ func sieveOdd(composites []bool, n int) int {
 	}
 
 	//fmt.Println("sieveOdd: returning foundPrimes = ", foundPrimes)
+	return foundPrimes
+}
+
+// sieveOdd runs the sieve on odd primes, starting from a given position
+func sieveOddInRange(composites []bool, n int, sliceStart int) int {
+	// Assume that 2 is already covered.
+	foundPrimes := 1
+	sieveStart := 0
+
+	//fmt.Println("sieveOddInRange: >> n = ", n, "; sliceStart = ", sliceStart)
+
+	for p := 3; p < len(composites); p += 2 {
+		//fmt.Println("sieveOddInRange: >> p = ", p, "; foundPrimes = ", foundPrimes, "; comp[p] = ", composites[p])
+
+		if composites[p] {
+			continue
+		}
+
+		foundPrimes++
+
+		if sliceStart == 0 {
+			// Start the sieve from p^2, if this is the first run through
+			sieveStart = p
+		} else {
+			// Else start from the beginning of the newly-appended section
+			sieveStart = int(math.Max(float64(p), math.Ceil(float64(sliceStart)/float64(p))))
+			//guessMax := input*int(math.Log(float64(input))) + input
+		}
+		//fmt.Println("sieveOddInRange: >> sieveStart = ", sieveStart, "; mul = ", sieveStart*p)
+
+		// Sieve on multiples of primes
+		for i := sieveStart; i*p < len(composites); i++ {
+			//fmt.Println("sieveOddInRange: >>>> INNER SETTING p = ", p, ";i*p = ", i*p)
+			composites[i*p] = true
+		}
+	}
+
+	//fmt.Println("sieveOddInRange: END composites = ", composites)
+	//fmt.Println("sieveOddInRange: returning foundPrimes = ", foundPrimes)
 	return foundPrimes
 }
 
