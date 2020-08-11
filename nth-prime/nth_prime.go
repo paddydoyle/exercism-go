@@ -21,16 +21,14 @@ func Nth(n int) (int, bool) {
 	// the sieve. Initialised to false.
 	composites := make([]bool, sieveLength, sieveLength)
 
-	sliceStart := 0
 	foundPrimes := 0
 
 	for foundPrimes < n {
 		foundPrimes = sieveOdd(composites, n)
-		//foundPrimes = sieveOddInRange(composites, n, sliceStart)
 
 		// Increase the size of the sieve
-		sliceStart = len(composites)
-		extraComposites := make([]bool, sliceStart, sliceStart)
+		sieveLength = len(composites)
+		extraComposites := make([]bool, sieveLength, sieveLength)
 		composites = append(composites, extraComposites...)
 	}
 
