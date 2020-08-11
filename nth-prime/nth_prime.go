@@ -16,13 +16,13 @@ func Nth(n int) (int, bool) {
 	}
 
 	// Build the sieve array incrementally. Start with this size as a guess.
-	sieveLength := 2 * n
+	sieveLength := estimateInitialSize(n)
 
-	// Assume that all numbers are primes, and mark
-	// the composites via the sieve. Initialised to false.
+	// Assume that all numbers are primes, and mark the composites via
+	// the sieve. Initialised to false.
 	composites := make([]bool, sieveLength, sieveLength)
-	sliceStart := 0
 
+	sliceStart := 0
 	foundPrimes := 0
 
 	//fmt.Println("\nNth: START n = ", n, "; foundPrimes = ", foundPrimes, "; cap = ", cap(composites))
@@ -45,6 +45,17 @@ func Nth(n int) (int, bool) {
 	//fmt.Println("Nth: composites = ", composites)
 
 	return findNthPrime(composites, n), true
+}
+
+func estimateInitialSize(n int) int {
+	// According to the Prime Number Theorem, the
+	// Nth prime number roughly satisfies "n * log(n)"
+	// So for the Sieve of Eratosthenes we'll allocate a bool
+	// array up to that size.
+	// Except that doesn't hold for small "n", so in that
+	// case conservatively use "n * 2"
+
+	return n * int(math.Max(2.0, math.Log(float64(n))))
 }
 
 // sieveOdd runs the sieve on odd primes
