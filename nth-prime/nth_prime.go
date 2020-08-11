@@ -130,7 +130,7 @@ func findNthPrime(composites []bool, n int) int {
 	//fmt.Println("findNthPrime: search for n = ", n, "; len = ", len(composites))
 
 	// Skip indexes 0 and 1, as they are not primes. Odd numbers only.
-	for i := 3; count < len(composites); i += 2 {
+	for i := 3; i < len(composites); i += 2 {
 		//fmt.Println("findNthPrime: loop: for i = ", i, "; val = ", composites[i])
 		if !composites[i] {
 			count++
