@@ -6,7 +6,84 @@ import (
 )
 
 // Nth returns the Nth prime number
-func Nth(input int) (int, bool) {
+func Nth(n int) (int, bool) {
+	// Split off trivial edge cases
+	if n == 0 {
+		return 0, false
+	}
+
+	// Build the sieve array incrementally. Start with this size as a guess.
+	sieveLength := 2 * n
+
+	// Assume that all numbers are primes, and mark
+	// the composites. Initialised to false.
+	composites := make([]bool, sieveLength, sieveLength)
+
+	foundPrimes := 0
+
+	//fmt.Println("\nNth: START n = ", n, "; foundPrimes = ", foundPrimes, "; cap = ", cap(composites))
+	//fmt.Println("Nth: START n = ", n, "; foundPrimes = ", foundPrimes, "; len = ", len(composites))
+
+	for foundPrimes < n {
+		foundPrimes = sieve(composites, n)
+
+		// Increase the size of the sieve by n
+		extraComposites := make([]bool, n, n)
+		composites = append(composites, extraComposites...)
+
+		//fmt.Println("Nth: OUTER n = ", n, "; foundPrimes = ", foundPrimes, "; len = ", len(composites))
+	}
+
+	//fmt.Println("Nth: composites = ", composites)
+
+	return countNthPrime(composites, n), true
+}
+
+func sieve(composites []bool, n int) int {
+	foundPrimes := 0
+
+	for p := 2; p < len(composites); p++ {
+		//fmt.Println("sieve: >> p = ", p, "; foundPrimes = ", foundPrimes, "; comp[p] = ", composites[p])
+
+		// Skip composities
+		if composites[p] {
+			continue
+		}
+		foundPrimes++
+
+		// Sieve on multiples of primes
+		for i := p; i*p < len(composites); i++ {
+			//fmt.Println("sieve: >>>> INNER SETTING p = ", p, ";i = ", i*p)
+			composites[i*p] = true
+		}
+	}
+
+	//fmt.Println("sieve: returning foundPrimes = ", foundPrimes)
+	return foundPrimes
+}
+
+func countNthPrime(composites []bool, n int) int {
+	count := 0
+
+	//fmt.Println("countNthPrime: search for n = ", n, "; len = ", len(composites))
+
+	// Skip indexes 0 and 1, as they are not primes.
+	for i := 2; count < len(composites); i++ {
+		//fmt.Println("countNthPrime: loop: for i = ", i, "; val = ", composites[i])
+		if !composites[i] {
+			count++
+		}
+
+		if count == n {
+			//fmt.Println("countNthPrime: found for n = ", n, "; i = ", i)
+			return i
+		}
+	}
+	return 0
+}
+
+// Nth2 returns the Nth prime number
+func Nth2(input int) (int, bool) {
 	// Split off trivial edge cases
 	if input == 0 {
 		return 0, false
