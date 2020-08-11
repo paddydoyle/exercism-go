@@ -29,12 +29,12 @@ func Nth(n int) (int, bool) {
 	//fmt.Println("Nth: START n = ", n, "; foundPrimes = ", foundPrimes, "; len = ", len(composites))
 
 	for foundPrimes < n {
-		//foundPrimes = sieveOdd(composites, n)
-		foundPrimes = sieveOddInRange(composites, n, sliceStart)
+		foundPrimes = sieveOdd(composites, n)
+		//foundPrimes = sieveOddInRange(composites, n, sliceStart)
 
 		// Increase the size of the sieve by n
 		sliceStart = len(composites)
-		extraComposites := make([]bool, n, n)
+		extraComposites := make([]bool, sliceStart, sliceStart)
 		//fmt.Println("Nth: APPEND BEFORE ; composites = ", composites)
 		composites = append(composites, extraComposites...)
 		//fmt.Println("Nth: APPEND AFTER ; composites = ", composites)
