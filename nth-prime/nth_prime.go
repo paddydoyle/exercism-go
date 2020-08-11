@@ -10,13 +10,16 @@ func Nth(n int) (int, bool) {
 	// Split off trivial edge cases
 	if n == 0 {
 		return 0, false
+	} else if n == 1 {
+		// In particular, avoid even numbers in the sieve.
+		return 2, true
 	}
 
 	// Build the sieve array incrementally. Start with this size as a guess.
 	sieveLength := 2 * n
 
 	// Assume that all numbers are primes, and mark
-	// the composites. Initialised to false.
+	// the composites via the sieve. Initialised to false.
 	composites := make([]bool, sieveLength, sieveLength)
 
 	foundPrimes := 0
@@ -25,7 +28,7 @@ func Nth(n int) (int, bool) {
 	//fmt.Println("Nth: START n = ", n, "; foundPrimes = ", foundPrimes, "; len = ", len(composites))
 
 	for foundPrimes < n {
-		foundPrimes = sieve(composites, n)
+		foundPrimes = sieveOdd(composites, n)
 
 		// Increase the size of the sieve by n
 		extraComposites := make([]bool, n, n)
@@ -36,46 +39,50 @@ func Nth(n int) (int, bool) {
 
 	//fmt.Println("Nth: composites = ", composites)
 
-	return countNthPrime(composites, n), true
+	return findNthPrime(composites, n), true
 }
 
-func sieve(composites []bool, n int) int {
-	foundPrimes := 0
+// sieveOdd runs the sieve on odd primes, starting from 3
+func sieveOdd(composites []bool, n int) int {
+	// Assume that 2 is already covered.
+	foundPrimes := 1
 
-	for p := 2; p < len(composites); p++ {
+	for p := 3; p < len(composites); p += 2 {
 		//fmt.Println("sieve: >> p = ", p, "; foundPrimes = ", foundPrimes, "; comp[p] = ", composites[p])
 
-		// Skip composities
 		if composites[p] {
 			continue
 		}
+
 		foundPrimes++
 
-		// Sieve on multiples of primes
+		// Sieve on multiples of primes, starting from p^2
 		for i := p; i*p < len(composites); i++ {
-			//fmt.Println("sieve: >>>> INNER SETTING p = ", p, ";i = ", i*p)
+			//fmt.Println("sieveOdd: >>>> INNER SETTING p = ", p, ";i = ", i*p)
 			composites[i*p] = true
 		}
 	}
 
-	//fmt.Println("sieve: returning foundPrimes = ", foundPrimes)
+	//fmt.Println("sieveOdd: returning foundPrimes = ", foundPrimes)
 	return foundPrimes
 }
 
-func countNthPrime(composites []bool, n int) int {
-	count := 0
+// findNthPrime finds the nth prime in a slice of composites
+func findNthPrime(composites []bool, n int) int {
+	// Assume that 2 is already covered.
+	count := 1
 
-	//fmt.Println("countNthPrime: search for n = ", n, "; len = ", len(composites))
+	//fmt.Println("findNthPrime: search for n = ", n, "; len = ", len(composites))
 
-	// Skip indexes 0 and 1, as they are not primes.
-	for i := 2; count < len(composites); i++ {
-		//fmt.Println("countNthPrime: loop: for i = ", i, "; val = ", composites[i])
+	// Skip indexes 0 and 1, as they are not primes. Odd numbers only.
+	for i := 3; count < len(composites); i += 2 {
+		//fmt.Println("findNthPrime: loop: for i = ", i, "; val = ", composites[i])
 		if !composites[i] {
 			count++
 		}
 
 		if count == n {
-			//fmt.Println("countNthPrime: found for n = ", n, "; i = ", i)
+			//fmt.Println("findNthPrime: found for n = ", n, "; i = ", i)
 			return i
 		}
 	}
