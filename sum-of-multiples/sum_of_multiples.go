@@ -4,20 +4,23 @@ package summultiples
 func SumMultiples(limit int, divisors ...int) int {
 	set := make(map[int]bool)
 
+	sum := 0
+
 	for _, d := range divisors {
 		if d == 0 {
 			continue
 		}
 
 		for i := 1; i*d < limit; i++ {
-			set[i*d] = true
+			product := i * d
+
+			if set[product] {
+				continue
+			}
+
+			set[product] = true
+			sum += product
 		}
-	}
-
-	sum := 0
-
-	for key, _ := range set {
-		sum += key
 	}
 
 	return sum
