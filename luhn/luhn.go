@@ -20,25 +20,24 @@ func Valid(input string) bool {
 		return false
 	}
 
-	// Simpler to loop from left to right, so prepend a zero if length
-	// is even. This doesn't affect the result, as anything times 0 is 0.
-	if len(input)%2 != 0 {
-		input = "0" + input
-	}
+	// Only perform the transformation on every second char.
+	parity := len(input)%2 == 0
 
 	// Last char is the checksum
 	sum := int(input[len(input)-1] - '0')
 
-	for i, c := range input[0 : len(input)-1] {
+	for _, c := range input[0 : len(input)-1] {
 		digit := int(c) - '0'
 
-		if i%2 == 0 {
+		if parity {
 			digit *= 2
 
 			if digit > 9 {
 				digit -= 9
 			}
 		}
+
+		parity = !parity
 
 		sum += digit
 	}
